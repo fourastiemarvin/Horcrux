@@ -8,6 +8,8 @@ import com.example.horcrux.network.HorcruxApi
 import com.example.horcrux.network.HorcruxApiFilter
 import com.example.horcrux.network.HorcruxProperty
 import kotlinx.coroutines.launch
+import kotlin.collections.ArrayList
+import kotlin.random.Random
 
 enum class HorcruxApiStatus { LOADING, ERROR, DONE }
 
@@ -23,6 +25,11 @@ class HomeViewModel(): ViewModel() {
     val response: LiveData<List<HorcruxProperty>>
         get() = _response
 
+    private var _randomCharacter = MutableLiveData<HorcruxProperty>()
+
+    val randomCharacter: LiveData<HorcruxProperty>
+        get() = _randomCharacter
+
     init {
         getHorcruxProperties(HorcruxApiFilter.SHOW_ALL)
     }
@@ -32,12 +39,19 @@ class HomeViewModel(): ViewModel() {
         viewModelScope.launch {
             _status.value = HorcruxApiStatus.LOADING
             try {
-                _response.value = HorcruxApi.retrofitService.getProperties(filter.value)
+                _response.value = HorcruxApi.retrofitService.getAllCharacters(filter.value)
                 _status.value = HorcruxApiStatus.DONE
+                getRandomChar()
             } catch (e: Exception) {
                 _status.value = HorcruxApiStatus.ERROR
                 _response.value = ArrayList()
             }
         }
+    }
+
+
+    private fun getRandomChar() {
+        val randInt = _response.value?.let { Random.nextInt(0, it.size) }
+        _randomCharacter.value = randInt?.let { _response.value?.get(it) }
     }
 }

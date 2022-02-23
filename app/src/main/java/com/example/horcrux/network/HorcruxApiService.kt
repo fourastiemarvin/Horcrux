@@ -22,7 +22,7 @@ private val retrofit = Retrofit.Builder()
 
 interface HorcruxApiService {
     @GET("characters")
-    suspend fun getProperties(@Query("filter") type: String):
+    suspend fun getAllCharacters(@Query("filter") type: String):
             List<HorcruxProperty>
 }
 

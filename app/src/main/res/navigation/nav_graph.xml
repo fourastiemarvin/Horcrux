@@ -9,6 +9,13 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.horcrux.HomeFragment"
-        android:label="HomeFragment"
-        tools:layout="@layout/fragment_home"/>
+        android:label="HomeFragment">
+        <action
+            android:id="@+id/action_homeFragment_to_characterFragment"
+            app:destination="@id/characterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/characterFragment"
+        android:name="com.example.horcrux.CharacterFragment"
+        android:label="CharacterFragment" />
 </navigation>
